@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌌 NeuraDoc - AI Research Assistant</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌌</text></svg>">
+</head>
+<body>
+    <!-- Floating AI Assistant Avatar -->
+    <div class="ai-avatar" id="aiAvatar">
+        <div class="avatar-pulse"></div>
+        <div class="avatar-core"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">🌌</span>
+                <h1>NeuraDoc</h1>
+                <span class="logo-subtitle">AI Research Assistant</span>
+            </div>
+            <div class="header-actions">
+                <button class="btn-secondary" id="resetBtn" title="Reset Session">
+                    <span class="btn-icon">🔄</span>
+                    Reset
+                </button>
+                <button class="btn-secondary" id="infoBtn" title="About NeuraDoc">
+                    <span class="btn-icon">ℹ️</span>
+                    Info
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Upload Section -->
+            <section class="upload-section" id="uploadSection">
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-content">
+                        <div class="upload-icon">📄</div>
+                        <h2>Upload Your Document</h2>
+                        <p>Drag & drop or click to upload PDF or TXT files</p>
+                        <input type="file" id="fileInput" accept=".pdf,.txt" hidden>
+                        <button class="btn-primary" id="uploadBtn">
+                            <span class="btn-icon">📁</span>
+                            Choose File
+                        </button>
+                    </div>
+                    <div class="upload-progress" id="uploadProgress" style="display: none;">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <p class="progress-text" id="progressText">Processing document...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Document Summary -->
+            <section class="summary-section" id="summarySection" style="display: none;">
+                <div class="glass-panel">
+                    <h3>📋 Document Summary</h3>
+                    <div class="summary-content" id="summaryContent"></div>
+                    <div class="document-info" id="documentInfo"></div>
+                </div>
+            </section>
+
+            <!-- Mode Selection -->
+            <section class="mode-section" id="modeSection" style="display: none;">
+                <div class="mode-tabs">
+                    <button class="mode-tab active" data-mode="ask">
+                        <span class="tab-icon">💬</span>
+                        Ask Anything
+                    </button>
+                    <button class="mode-tab" data-mode="challenge">
+                        <span class="tab-icon">🎯</span>
+                        Challenge Me
+                    </button>
+                </div>
+            </section>
+
+            <!-- Ask Anything Mode -->
+            <section class="chat-section" id="askSection" style="display: none;">
+                <div class="chat-container">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message ai-message">
+                            <div class="message-avatar">🤖</div>
+                            <div class="message-content">
+                                <p>Hello! I've analyzed your document. Ask me anything about its content, and I'll provide grounded answers with references.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-input">
+                        <div class="input-container">
+                            <input type="text" id="questionInput" placeholder="Ask a question about your document..." maxlength="500">
+                            <button class="btn-primary" id="sendBtn">
+                                <span class="btn-icon">🚀</span>
+                                Send
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Challenge Mode -->
+            <section class="challenge-section" id="challengeSection" style="display: none;">
+                <div class="challenge-container">
+                    <div class="challenge-header">
+                        <h3>🎯 Logic Challenge</h3>
+                        <p>Test your understanding with AI-generated questions</p>
+                        <button class="btn-primary" id="generateChallengeBtn">
+                            <span class="btn-icon">🎲</span>
+                            Generate Questions
+                        </button>
+                    </div>
+                    
+                    <div class="challenge-questions" id="challengeQuestions" style="display: none;">
+                        <div class="question-list" id="questionList"></div>
+                    </div>
+                    
+                    <div class="challenge-results" id="challengeResults" style="display: none;">
+                        <h3>📊 Evaluation Results</h3>
+                        <div class="results-container" id="resultsContainer"></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Info Modal -->
+    <div class="modal" id="infoModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🌌 About NeuraDoc</h3>
+                <button class="modal-close" id="closeInfoModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p><strong>NeuraDoc</strong> is an AI-powered research assistant that reads your documents and enables interactive question answering and logic-based challenges.</p>
+                
+                <h4>✨ Key Features:</h4>
+                <ul>
+                    <li><strong>Document Analysis:</strong> Upload PDF or TXT files for intelligent processing</li>
+                    <li><strong>Smart Summarization:</strong> Get concise, AI-generated summaries</li>
+                    <li><strong>Interactive Q&A:</strong> Ask questions and get grounded answers with references</li>
+                    <li><strong>Logic Challenges:</strong> Test your understanding with AI-generated questions</li>
+                    <li><strong>Zero Hallucination:</strong> All responses are grounded in your uploaded document</li>
+                </ul>
+                
+                <h4>🔧 Technical Stack:</h4>
+                <ul>
+                    <li><strong>Frontend:</strong> HTML5, CSS3, Vanilla JavaScript</li>
+                    <li><strong>Backend:</strong> Python Flask with AI/ML libraries</li>
+                    <li><strong>AI Models:</strong> Transformers, Sentence-Transformers, spaCy</li>
+                    <li><strong>Document Processing:</strong> PyMuPDF for PDF parsing</li>
+                </ul>
+                
+                <p><em>Built with ❤️ for the AI research community</em></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <p id="loadingText">Processing...</p>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html> 
